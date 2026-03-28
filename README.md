@@ -1,14 +1,6 @@
-# RL+ GridWorld Pipeline (Notebook-to-Scripts)
+# RL+ GridWorld Pipeline
 
-## 1. Assignment and Objective
-This project converts the original `grid.ipynb` workflow into a reproducible script pipeline under `src/`.
-
-Goals:
-- Keep `grid.ipynb` unchanged.
-- Rebuild all major RL stages as CLI scripts.
-- Use **pygame (headless, save-only)** for visual outputs.
-- Save all artifacts to `results/`.
-- Provide full reproducibility from command line.
+## 1. Assignment
 
 Environment:
 - Grid size: `10x10`.
@@ -60,24 +52,24 @@ Vector form:
 
 ### 3.3 Action-value update
 For deterministic per-action matrix \(P_a\):
-\[
+$$
 Q_{k+1}(s,a) = r(s) + \gamma \sum_{s'} P_a[s,s']V_k(s')
-\]
+$$
 
 ### 3.4 Policy projection from Q
-\[
+$$
 V(s)=\sum_{a\in A}\pi(a\mid s)Q(s,a)
-\]
+$$
 
 ### 3.5 Greedy + soft policy improvement
 Greedy policy:
-\[
+$$
 \pi_{\text{greedy}}(a\mid s)=\mathbf{1}\{a=\arg\max_{a'}Q(s,a')\}
-\]
+$$
 Soft update:
-\[
+$$
 \pi_{new}=(1-\tau)\pi_{old}+\tau\pi_{\text{greedy}}
-\]
+$$
 
 ---
 
