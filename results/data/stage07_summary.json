@@ -1,0 +1,9 @@
+{
+  "starts": [
+    57,
+    46
+  ],
+  "avg_steps_random": 694.5,
+  "avg_steps_improved": 6.0,
+  "improved_not_worse": true
+}

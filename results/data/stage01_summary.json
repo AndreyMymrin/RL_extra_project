@@ -1,0 +1,21 @@
+{
+  "seed": 42,
+  "grid_h": 10,
+  "grid_w": 10,
+  "num_states": 100,
+  "goal_state": 8,
+  "obstacle_count": 10,
+  "obstacle_states": [
+    9,
+    10,
+    20,
+    41,
+    53,
+    60,
+    67,
+    70,
+    81,
+    93
+  ],
+  "policy_row_sums_ok": true
+}

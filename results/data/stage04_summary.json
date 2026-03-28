@@ -1,0 +1,8 @@
+{
+  "P_row_sums_close_to_1": true,
+  "V_best_state": 8,
+  "V_worst_state": 9,
+  "V_best_value": 0.0,
+  "V_worst_value": -95.09591059287138,
+  "final_delta": 0.04953625663766559
+}
