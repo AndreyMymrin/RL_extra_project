@@ -37,21 +37,22 @@ Obstacle generation constraint:
 ## 3. Theory (with formulas)
 
 ### 3.1 Policy-induced transition matrix
-\[
+$$
 P[s,s'] = \sum_{a \in A} \pi(a \mid s)\,\mathbf{1}\{\text{step}(s,a)=s'\}
-\]
+$$
 
 ### 3.2 Bellman expectation update for value function
-\[
+$$
 V_{k+1}(s) = r(s) + \gamma \sum_{s'} P[s,s']V_k(s')
-\]
+$$
 Vector form:
-\[
+$$
 \mathbf{V}_{k+1} = \mathbf{r} + \gamma P\mathbf{V}_k
-\]
+$$
 
 ### 3.3 Action-value update
 For deterministic per-action matrix \(P_a\):
+
 $$
 Q_{k+1}(s,a) = r(s) + \gamma \sum_{s'} P_a[s,s']V_k(s')
 $$
@@ -63,10 +64,13 @@ $$
 
 ### 3.5 Greedy + soft policy improvement
 Greedy policy:
+
 $$
 \pi_{\text{greedy}}(a\mid s)=\mathbf{1}\{a=\arg\max_{a'}Q(s,a')\}
 $$
+
 Soft update:
+
 $$
 \pi_{new}=(1-\tau)\pi_{old}+\tau\pi_{\text{greedy}}
 $$
