@@ -158,6 +158,8 @@ python -m src.run_stage --stage all --results-dir results
 Optional:
 ```bash
 python -m src.run_stage --stage all --results-dir results --seed 42
+python -m src.run_stage --stage all --results-dir results --show-window
+python -m src.run_stage --stage all --results-dir results --show-window --window-delay-ms 120
 ```
 
 ### 5.4 Validate generated artifacts
@@ -185,3 +187,5 @@ python -m src.validate_results --results-dir results
 Common args:
 - `--results-dir` (default: `results`)
 - `--seed` (default from stage env config, currently `42`)
+- `--show-window` (open pygame window while still saving PNG files)
+- `--window-delay-ms` (frame delay in window mode, default: `300`)

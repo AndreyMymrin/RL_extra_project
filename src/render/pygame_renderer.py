@@ -10,21 +10,66 @@ from src.core.env import EnvState, state_to_rc
 
 
 _initialized = False
+_show_window = False
+_window_delay_ms = 300
+_screen: pygame.Surface | None = None
+
+
+def set_render_mode(show_window: bool = False, window_delay_ms: int = 300) -> None:
+    global _show_window, _window_delay_ms
+    _show_window = bool(show_window)
+    _window_delay_ms = max(0, int(window_delay_ms))
 
 
 def init_pygame() -> None:
     global _initialized
     if _initialized:
         return
-    os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+    # Default mode is headless save-only; window mode is opt-in via CLI flag.
+    if not _show_window:
+        os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
     pygame.init()
     pygame.font.init()
     _initialized = True
 
 
+def _show_surface_in_window(surface: pygame.Surface, caption: str) -> None:
+    global _screen
+    if not _show_window:
+        return
+
+    width, height = surface.get_size()
+    if _screen is None or _screen.get_size() != (width, height):
+        _screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption(caption)
+    _screen.blit(surface, (0, 0))
+    pygame.display.flip()
+
+    # Pump events so OS does not mark the window as unresponsive.
+    process_window_events()
+    if _window_delay_ms > 0:
+        clock = pygame.time.Clock()
+        elapsed = 0
+        while elapsed < _window_delay_ms:
+            process_window_events()
+            dt = clock.tick(60)
+            elapsed += dt
+
+
+def process_window_events() -> None:
+    if not _show_window or not _initialized:
+        return
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit("Window closed by user")
+
+
 def save_surface(surface: pygame.Surface, out_path: Path) -> None:
+    init_pygame()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     pygame.image.save(surface, str(out_path))
+    _show_surface_in_window(surface, caption=out_path.name)
 
 
 def _lerp_color(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> tuple[int, int, int]:

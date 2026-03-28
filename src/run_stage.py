@@ -6,6 +6,7 @@ from pathlib import Path
 from types import ModuleType
 
 from src.io.artifacts import ensure_dirs
+from src.render.pygame_renderer import set_render_mode
 
 
 _STAGE_FILES = {
@@ -43,14 +44,18 @@ def main() -> None:
     parser.add_argument("--stage", required=True, choices=[*list(_STAGE_FILES.keys()), "all"])
     parser.add_argument("--results-dir", default="results")
     parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--show-window", action="store_true", help="Show pygame window while rendering frames")
+    parser.add_argument("--window-delay-ms", type=int, default=300, help="Delay (ms) between rendered frames in window mode")
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
     ensure_dirs(results_dir)
+    set_render_mode(show_window=args.show_window, window_delay_ms=args.window_delay_ms)
 
     stages = list(_STAGE_FILES.keys()) if args.stage == "all" else [args.stage]
 
     for stage in stages:
+        print(f"[stage:{stage}] started", flush=True)
         summary = run_one(stage, results_dir=results_dir, seed=args.seed)
         print(f"[stage:{stage}] {summary}")
 

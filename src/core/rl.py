@@ -4,6 +4,12 @@ import numpy as np
 
 from src.core.env import EnvState, step
 
+try:
+    from src.render.pygame_renderer import process_window_events
+except Exception:  # pragma: no cover - optional during non-visual runs
+    def process_window_events() -> None:
+        return
+
 
 def build_transition_matrix(env: EnvState, policy: np.ndarray) -> np.ndarray:
     p = np.zeros((env.num_states, env.num_states), dtype=float)
@@ -31,6 +37,7 @@ def run_value_iteration(
     conv = []
     history = [v.copy()]
     for _ in range(num_iter):
+        process_window_events()
         v, delta = value_iteration_step(v, p, env.rewards, gamma)
         conv.append(delta)
         history.append(v.copy())
@@ -79,6 +86,7 @@ def run_q_iteration(
     q_hist = [q.copy()]
     v_hist = [v.copy()]
     for _ in range(num_iter):
+        process_window_events()
         v, q, delta = q_iteration_step(v, q, p_action, policy, env.rewards, gamma, env.actions)
         conv.append(delta)
         q_hist.append(q.copy())
@@ -124,7 +132,9 @@ def run_soft_policy_improvement(
     round_avg_steps: list[float] = []
 
     for _ in range(rounds):
+        process_window_events()
         for _ in range(q_iters_per_round):
+            process_window_events()
             v, q, delta = q_iteration_step(v, q, p_action, policy, env.rewards, gamma, env.actions)
         round_conv.append(delta)
 
